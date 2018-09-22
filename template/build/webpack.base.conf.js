@@ -27,9 +27,7 @@ module.exports = {
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
-    publicPath: process.env.NODE_ENV === 'production'
-      ? config.build.assetsPublicPath
-      : config.dev.assetsPublicPath
+    publicPath: config[process.env.BUILD_TYPE].assetsPublicPath
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
@@ -38,6 +36,7 @@ module.exports = {
       'vue$': 'vue/dist/vue.esm.js',
       {{/if_eq}}
       '@': resolve('src'),
+      'config': resolve(`src/config/${process.env.NODE_ENV}`)
     }
   },
   module: {
