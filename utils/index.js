@@ -21,6 +21,22 @@ exports.sortDependencies = function sortDependencies(data) {
 }
 
 /**
+ * Runs `git init` in the project directory
+ * @param {string} cwd Path of the created project directory
+ * @param {object} data Data from questionnaire
+ */
+exports.gitInit = function gitInit(
+  cwd,
+  color
+) {
+  console.log(`\n\n# ${color("git init ...")}`);
+  console.log("# ========================\n");
+  return runCommand('git', ["init"], {
+    cwd
+  });
+};
+
+/**
  * Runs `npm install` in the project directory
  * @param {string} cwd Path of the created project directory
  * @param {object} data Data from questionnaire
@@ -38,21 +54,6 @@ exports.installDependencies = function installDependencies(
     })
   })
 }
-/**
- * Runs `git init` in the project directory
- * @param {string} cwd Path of the created project directory
- * @param {object} data Data from questionnaire
- */
-exports.gitInit = function gitInit(
-  cwd,
-  color
-) {
-  console.log(`\n\n# ${color("git init ...")}`);
-  console.log("# ========================\n");
-  return runCommand('git', ["init"], {
-    cwd
-  });
-};
 /**
  * Runs `npm run lint -- --fix` in the project directory
  * @param {string} cwd Path of the created project directory
