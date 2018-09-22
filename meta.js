@@ -31,7 +31,7 @@ module.exports = {
       return templateVersion
     },
   },
-  
+
   prompts: {
     name: {
       when: 'isNotTest',
@@ -160,8 +160,8 @@ module.exports = {
   filters: {
     '.eslintrc.js': 'lint',
     '.eslintignore': 'lint',
-    'config/test.env.js': 'unit || e2e',
-    'build/webpack.test.conf.js': "unit && runner === 'karma'",
+    '.stylelintrc.js': 'lint',
+    '.stylelintignore': 'lint',
     'test/unit/**/*': 'unit',
     'test/unit/index.js': "unit && runner === 'karma'",
     'test/unit/jest.conf.js': "unit && runner === 'jest'",

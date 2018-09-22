@@ -30,13 +30,29 @@ exports.installDependencies = function installDependencies(
   executable = 'npm',
   color
 ) {
-  console.log(`\n\n# ${color('Installing project dependencies ...')}`)
-  console.log('# ========================\n')
-  return runCommand(executable, ['install'], {
-    cwd,
+  return gitInit(cwd, color).then(() => {
+    console.log(`\n\n# ${color('Installing project dependencies ...')}`)
+    console.log('# ========================\n')
+    return runCommand(executable, ['install'], {
+      cwd,
+    })
   })
 }
-
+/**
+ * Runs `git init` in the project directory
+ * @param {string} cwd Path of the created project directory
+ * @param {object} data Data from questionnaire
+ */
+exports.gitInit = function gitInit(
+  cwd,
+  color
+) {
+  console.log(`\n\n# ${color("git init ...")}`);
+  console.log("# ========================\n");
+  return runCommand('git', ["init"], {
+    cwd
+  });
+};
 /**
  * Runs `npm run lint -- --fix` in the project directory
  * @param {string} cwd Path of the created project directory
@@ -77,7 +93,7 @@ To get started:
       data
     )}${lintMsg(data)}npm run dev`
   )}
-  
+
 Documentation can be found at https://vuejs-templates.github.io/webpack
 `
   console.log(message)
