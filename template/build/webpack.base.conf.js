@@ -3,7 +3,8 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
-
+const glob = require('glob')
+const relative = require('relative')
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
@@ -19,11 +20,15 @@ function resolve (dir) {
   }
 }){{/lint}}
 
+const entry = {}
+const rootSrc = resolve('src/pages')
+glob.sync(rootSrc + '/**/main.js').forEach(file => {
+  var key = relative(rootSrc, file).replace('/main.js', '')
+  entry[key] = file
+})
 module.exports = {
   context: path.resolve(__dirname, '../'),
-  entry: {
-    app: './src/main.js'
-  },
+  entry,
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',

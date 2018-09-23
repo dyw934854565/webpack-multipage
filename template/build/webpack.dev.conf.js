@@ -27,6 +27,12 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     clientLogLevel: 'warning',
     historyApiFallback: {
       rewrites: [
+        ...Object.keys(baseWebpackConfig.entry)
+          .filter(key => key != 'index')
+          .map(key => ({
+            from: new RegExp(`^\/${key}`),
+            to: path.posix.join(config.dev.assetsPublicPath, `${key}.html`)
+          })),
         { from: /.*/, to: path.posix.join(config.dev.assetsPublicPath, 'index.html') },
       ],
     },
@@ -57,11 +63,18 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     new webpack.NamedModulesPlugin(), // HMR shows correct file names in console on update.
     new webpack.NoEmitOnErrorsPlugin(),
     // https://github.com/ampedandwired/html-webpack-plugin
-    new HtmlWebpackPlugin({
-      filename: 'index.html',
-      template: 'index.html',
-      inject: true
-    }),
+    ...Object.keys(baseWebpackConfig.entry).map(
+      key =>
+        new HtmlWebpackPlugin({
+          templateParameters: {
+            page: key
+          },
+          chunks: [key],
+          filename: `${key}.html`,
+          template: 'index.html',
+          inject: true
+        })
+    ),
     // copy custom static assets
     new CopyWebpackPlugin([
       {
